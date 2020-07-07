@@ -80,9 +80,11 @@ We need to be able to:
 * Update data from task (title, description, status)
 * Reorder columns content and the columns themselves
 
-We will appreciate some of this extra functionalitys:
+We will appreciate some of this extra functionalities:
 
 * Change task status and reorder columns with drag&drop
+* Be able to create new tasks without popups
+* Be able to add new status dinamically
 
 ## Pieces of advice
 
