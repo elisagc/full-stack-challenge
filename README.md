@@ -42,7 +42,7 @@ Now you will have everything running so you can go ahead to `http://localhost:80
 
 ## Exercises
 
-This code challenge have three main parts. You don´t have to do all the exercises. The more you do, the better knowledge we will have about you.
+This code challenge have some small tasks. You don´t have to do all the exercises. The more you do, the better knowledge we will have about you.
 
 ### First exercise
 We have a list of 15 tasks and we need to represent them as in a TodoApp. You are free to use any way to organize your components, styles, etc. You have to use `Vue` but you are free to use any kind of styles or UI Library. This project is ready to work with ES6/ES7 so feel free to use the last characteristics of JavaScript in your code.
