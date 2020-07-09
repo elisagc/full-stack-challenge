@@ -1,28 +1,54 @@
 <template>
   <div>
     <Header></Header>
-    <form class="form" action="#" method="get" @submit="addTask" v-if="this.$store.state.isOpen">
-      <div class="form-group row">
-        <label for="inputTitle">Task Title</label>
-        <input type="text" class="form-control" v-model="title" />
 
-        <label for="taskDescription">Task Description</label>
-        <textarea class="form-control" v-model="description"></textarea>
+    <template v-if="this.$store.state.isOpen">
+      <form class="form">
+        <div class="form-group row">
+          <label for="inputTitle">Task Title</label>
+          <input type="text" class="form-control" v-model="title" />
 
-        <div class="form-box">
-          <div>
-            <select class="custom-select mr-sm-2" v-model="status_id">
-              <option value="1" selected>Not Started</option>
-              <option value="2">In Progress</option>
-              <option value="3">Finished</option>
-            </select>
-          </div>
-          <div>
-            <button class="btn btn-primary">Add new task</button>
+          <label for="taskDescription">Task Description</label>
+          <textarea class="form-control" v-model="description"></textarea>
+
+          <div class="form-box">
+            <div>
+              <select class="custom-select mr-sm-2" v-model="status_id">
+                <option value="1" selected>Not Started</option>
+                <option value="2">In Progress</option>
+                <option value="3">Finished</option>
+              </select>
+            </div>
+            <div>
+              <button
+                class="btn btn-primary"
+                v-if="editable"
+                v-on:click.prevent="editTask()"
+              >Save changes</button>
+              <button
+                class="btn btn-danger"
+                v-if="editable"
+                v-on:click.prevent="cancelEdition()"
+              >Cancel edition</button>
+              <button
+                class="btn btn-primary"
+                v-if="!editable"
+                v-on:click.prevent="addTask()"
+              >Add new task</button>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+        <md-snackbar
+          :md-position="position"
+          :md-duration="isInfinity ? Infinity : duration"
+          :md-active.sync="showSnackbar"
+          md-persistent
+        >
+          <span>Connection timeout. Showing limited messages!</span>
+          <md-button class="md-primary" @click="showSnackbar = false">Retry</md-button>
+        </md-snackbar>
+      </form>
+    </template>
 
     <div class="cont">
       <div class="cont-status" md-with-hover v-for="(state, index) in status" :key="index">
@@ -39,7 +65,7 @@
                 }}
               </md-card-content>
               <md-card-actions>
-                <md-button>
+                <md-button v-on:click.prevent="setDataToEdit(task)">
                   <md-icon>edit</md-icon>
                 </md-button>
                 <md-button v-on:click.prevent="deleteTask(task)">
@@ -79,7 +105,9 @@ export default {
       description: "",
       status_id: 1,
       created_at: "",
-      updated_at: ""
+      updated_at: "",
+      id: null,
+      editable: false
     };
   },
   props: {
@@ -103,6 +131,7 @@ export default {
       var url = "tasks/" + task.id;
       axios.delete(url).then(response => {
         this.getTasks();
+        this.resetData();
       });
     },
     addTask: function(e) {
@@ -119,23 +148,57 @@ export default {
         })
         .then(response => {
           this.getTasks();
-          this.title = "";
-          this.description = "";
-          this.status_id = 1;
-          this.created_at = "";
-          this.updated_at = "";
+          this.resetData();
         })
         .catch(error => {
           console.log(error.response.data);
         });
-
-      e.preventDefault();
+    },
+    setDataToEdit(task) {
+      this.$store.state.isOpen = true;
+      this.editable = true;
+      this.title = task.title;
+      this.description = task.description;
+      this.status_id = task.status_id;
+      this.updated_at = this.timestamp(new Date());
+      this.created_at = task.created_at;
+      this.id = task.id;
+    },
+    editTask() {
+      var url = "tasks/" + this.id;
+      axios
+        .put(url, {
+          title: this.title,
+          description: this.description,
+          status_id: this.status_id,
+          created_at: this.created_at,
+          updated_at: this.updated_at
+        })
+        .then(response => {
+          this.getTasks();
+          this.resetData();
+        })
+        .catch(error => {
+          console.log(error.response.data);
+        });
+    },
+    cancelEdition() {
+      this.resetData();
     },
     timestamp(date) {
       return date
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
+    },
+    resetData() {
+      this.editable = false;
+      this.$store.state.isOpen = false;
+      this.title = "";
+      this.description = "";
+      this.status_id = 1;
+      this.created_at = "";
+      this.updated_at = "";
     }
   }
 };

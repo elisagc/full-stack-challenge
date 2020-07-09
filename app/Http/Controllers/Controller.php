@@ -84,7 +84,15 @@ class Controller extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'status_id' => 'required',
+            'updated_at' => 'required'
+        ]);
+
+        Task::find($id)->update($request->all());
+        return;
     }
 
     /**
