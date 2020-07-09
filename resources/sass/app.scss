@@ -36,10 +36,19 @@ body {
         align-items: center;
         padding: 15px;
         margin-bottom: 15px;
-        background-color: rgba(118, 197, 221, 0.76);
         border-radius: 5px;
         min-width: 25%;
         min-height: 1000px;
+    }
+
+    .color1 {
+        background-color: rgba(118, 197, 221, 0.76);
+    }
+    .color2 {
+        background-color: rgba(209, 64, 136, 0.815);
+    }
+    .color3 {
+        background-color: rgba(63, 160, 123, 0.616);
     }
 }
 
@@ -49,12 +58,14 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin: 15px 0;
+    background-color: rgba(65, 51, 97, 0.322);
 
     &-group {
         padding: 20px;
-        width: 50%;
+        width: 40%;
         border-radius: 5px;
+        background-color: white;
+        margin: 25px;
     }
 
     &-box {
