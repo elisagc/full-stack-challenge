@@ -28,6 +28,7 @@ body {
 
     h1 {
         text-align: center;
+        margin: 0;
     }
 
     &-status {
@@ -58,16 +59,23 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    background-color: rgba(65, 51, 97, 0.322);
 
     &-group {
         padding: 20px;
         width: 40%;
         border-radius: 5px;
         background-color: white;
+        -webkit-box-shadow: 9px 10px 31px -16px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 9px 10px 31px -16px rgba(0, 0, 0, 0.75);
+        box-shadow: 9px 10px 31px -16px rgba(0, 0, 0, 0.75);
         margin: 25px;
     }
 
+    @media only screen and (max-width: 430px) {
+        &-group {
+            width: 100%;
+        }
+    }
     &-box {
         display: flex;
         justify-content: space-between;
